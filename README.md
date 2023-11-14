@@ -1,4 +1,4 @@
-# Mini Maze Game using Python
+# Glow in the Dark Mini Game 
 This project features the use of python language and provided libraries to create a mini game where the sprite navigates through a dark maze.
 
 
