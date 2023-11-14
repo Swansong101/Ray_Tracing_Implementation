@@ -1,5 +1,5 @@
 # Mini Maze Game using Python
-This project features the use of python language and provided libraries to create a mini game where the sprite navigates through a dark maze making use of the different surfaces around them to light their way.
+This project features the use of python language and provided libraries to create a mini game where the sprite navigates through a dark maze.
 
 
 # Game Objective: 
