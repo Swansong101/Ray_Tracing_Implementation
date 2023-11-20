@@ -12,7 +12,7 @@ turtle.register_shape("player_left.gif")
 turtle.register_shape("treasure.gif")
 turtle.register_shape("wall.gif")
 
-#Create Pen
+#Create path
 class Pen(turtle.Turtle):
     def __init__(self):
         turtle.Turtle.__init__(self)
