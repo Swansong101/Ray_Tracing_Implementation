@@ -250,18 +250,18 @@ level_1 = [
     "X  XXX        XXXXT XXXXX",
     "X  XXX  XXXXXXXXXXXXXXXXX",
     "X         XXXXXXXXXXXXXXX",
-    "X                XXXXXXXX",
+    "X               TXXXXXXXX",
     "XXXXXXXXXXXX     XXXXX  X",
     "XXXXXXXXXXXXXXX  XXXXX  X",
     "XXX  XXXXXXXXXX         X",
     "XXXE                    X",
     "XXX         XXXXXXXXXXXXX",
     "XXXXXXXXXX  XXXXXXXXXXXXX",
-    "XXXXXXXXXX              X",
+    "XXXXXXXXXX        T     X",
     "XX   XXXXX              X",
-    "XX   XXXXXXXXXXXXX  XXXXX",
+    "XX  TXXXXXXXXXXXXX  XXXXX",
     "XX    XXXXXXXXXXXX  XXXXX",
-    "XX           XXX        X",
+    "XX           XXX      T X",
     "XXXE                    X",
     "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
@@ -314,60 +314,7 @@ def setup_maze(level):
                 if character == "E":
                     enemies.append(Enemy(screen_x, screen_y))
 
-# Function to cast rays from the player's position
-def cast_rays():
-    global reflectors  # Access the global reflectors list
 
-    player_x, player_y = player.position()
-
-    # Define ray directions (you can add more directions as needed)
-    ray_directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-
-    for direction in ray_directions:
-        dx, dy = direction
-        x, y = player_x, player_y
-
-        # Use turtle to draw rays with varying opacity for a shadow effect
-        for _ in range(50):
-            x += dx
-            y += dy
-
-            # Check if the position is within the maze boundaries
-            if not (-288 <= x <= 288 and -288 <= y <= 288):
-                break
-
-            # Check for collisions with walls
-            if (x, y) in walls:
-                # Draw the wall hit point
-                turtle.penup()
-                turtle.goto(x, y)
-                turtle.pendown()
-                turtle.pencolor(0, 1, 0)  # Green color for walls
-                turtle.dot(2)
-                turtle.update()
-                break
-
-            # Check for collisions with reflective surfaces
-            if (x, y) in reflectors:
-                # Calculate the reflection vector using a simple method
-                dx, dy = reflect(dx, dy)
-
-            # Calculate opacity based on distance from the player
-            distance = math.sqrt((x - player_x) ** 2 + (y - player_y) ** 2)
-            opacity = max(1 - distance / 100, 0)  # Adjust the denominator to control opacity
-
-            # Draw the ray with varying opacity and green color
-            turtle.penup()
-            turtle.goto(player_x, player_y)
-            turtle.pendown()
-            turtle.pencolor(0, opacity, 0)  # Green color with varying opacity
-            turtle.goto(x, y)
-            turtle.update()
-
-# Function to calculate the reflection of a vector
-def reflect(dx, dy):
-    # Calculate the reflection vector using a simple method
-    return dy, dx
 
 #Create class instances
 pen = Pen()
@@ -397,7 +344,6 @@ for enemy in enemies:
 
 #Main game loop
 while True:
-    cast_rays()
     #Iterate through treasure list
     for treasure in treasures:
         if player.is_collision(treasure):
