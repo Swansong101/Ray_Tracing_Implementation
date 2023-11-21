@@ -1,11 +1,74 @@
+import time
 import turtle
 import math
 import random
 
 
+# Function to display the splash screen with a countdown
+def display_splash_screen():
+    splash_screen = turtle.Screen()
+    splash_screen.bgcolor("black")
+    splash_screen.title("Maze Game Splash Screen")
+    splash_screen.setup(700, 700)
+
+    # Create a turtle for the splash screen
+    splash_pen = turtle.Turtle()
+    splash_pen.speed(0)
+    splash_pen.color("green")
+    splash_pen.penup()
+    splash_pen.hideturtle()
+
+    # Display the splash screen text and maze image
+    splash_pen.goto(0, 100)
+    splash_pen.write("Glow in the Dark Maze Game", align="center", font=("Courier", 24, "normal"))
+
+    # Add maze image at the center
+    turtle.addshape("sodapdf-converted.gif")
+    splash_pen.shape("sodapdf-converted.gif")
+    splash_pen.goto(0, -50)
+    splash_pen.stamp()
+
+    # Display a countdown message
+    splash_pen.color("white")
+    splash_pen.goto(0, -200)
+
+    for i in range(5, 0, -1):
+        splash_pen.clear()
+        splash_pen.write(f"Game starting in {i}...", align="center", font=("Courier", 16, "normal"))
+        turtle.update()
+        time.sleep(1)
+
+
+# Function to set up the maze
+def setup_maze(level):
+    for y in range(len(level)):
+        for x in range(len(level[y])):
+            character = level[y][x]
+            screen_x = -288 + (x * 24)
+            screen_y = 288 - (y * 24)
+
+            if character == "X":
+                pen.goto(screen_x, screen_y)
+                pen.shape("wall.gif")
+                pen.stamp()
+                walls.append((screen_x, screen_y))
+
+            if character == "P":
+                player.goto(screen_x, screen_y)
+
+            if character == "T":
+                treasures.append(Treasure(screen_x, screen_y))
+
+            if character == "E":
+                enemies.append(Enemy(screen_x, screen_y))
+
+
+# Call the function to display the splash screen
+display_splash_screen()
+
 wn = turtle.Screen()
 wn.bgcolor("black")
-wn.title("Maze Game")
+wn.title("Glow In The Dark")
 wn.setup(700,700)
 wn.tracer(0)
 
