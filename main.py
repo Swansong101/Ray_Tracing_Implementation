@@ -147,6 +147,61 @@ def setup_maze(level):
             if character == "E":
                 enemies.append(Enemy(screen_x, screen_y))
 
+
+
+# Characters available for selection
+characters = [
+    {"name": "Character 1", "image": "pennywise - v2.gif"},
+    {"name": "Character 2", "image": "pennywise - v2.gif"},
+    {"name": "Character 3", "image": "pennywise - v2.gif"},
+    {"name": "Character 4", "image": "pennywise - v2.gif"},
+    {"name": "Character 5", "image": "pennywise - v2.gif"},
+]
+
+# Selected character index (default to the first character)
+selected_character_index = 0
+
+
+# Function to display the character selection menu
+def character_selection():
+    global selected_character_index
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()
+                elif event.key == pygame.K_LEFT:
+                    selected_character_index = (selected_character_index - 1) % len(characters)
+                elif event.key == pygame.K_RIGHT:
+                    selected_character_index = (selected_character_index + 1) % len(characters)
+                elif event.key == pygame.K_RETURN:
+                    # Return the selected character
+                    return characters[selected_character_index]
+
+        screen.fill(BLACK)
+
+        # Calculate center of the screen
+        center_x, center_y = screen_width // 2, screen_height // 2
+
+        # Draw menu options
+        draw_text("Character Selection", font, GREEN, center_x, 100)
+        draw_text("Use Left/Right arrow keys to select", small_font, WHITE, center_x, center_y)
+        draw_text("Press Enter to confirm", small_font, WHITE, center_x, center_y + 50)
+
+        # Display the selected character image
+        selected_character = pygame.image.load(characters[selected_character_index]["image"])
+        screen.blit(selected_character, (center_x - 50, center_y + 100))
+
+        pygame.display.flip()
+
+
+
+# Function to display the main menu
 def main_menu():
     while True:
         for event in pygame.event.get():
@@ -161,12 +216,13 @@ def main_menu():
                     # Start the game
                     return
                 elif event.key == pygame.K_2:
-                    # Resume game (add your logic here)
-                    pass
+                    # Resume the game
+                    return
                 elif event.key == pygame.K_3:
-                    # Quit the game
-                    pygame.quit()
-                    sys.exit()
+                    # Character selection
+                    selected_character = character_selection()
+                    print("Selected Character: {}".format(selected_character["name"]))
+                    # Add logic to use the selected character in the game
 
         screen.fill(BLACK)
 
@@ -177,13 +233,14 @@ def main_menu():
         draw_text("Glow in the Dark Maze", font, GREEN, center_x, 100)
         draw_text("1. Start Game", small_font, WHITE, center_x, center_y)
         draw_text("2. Resume", small_font, WHITE, center_x, center_y + 50)
-        draw_text("3. Quit", small_font, WHITE, center_x, center_y + 100)
+        draw_text("3. Character Selection", small_font, WHITE, center_x, center_y + 100)
+        draw_text("4. Quit", small_font, WHITE, center_x, center_y + 150)
 
         pygame.display.flip()
 
+
 # Display the main menu
 main_menu()
-
 
 
 
