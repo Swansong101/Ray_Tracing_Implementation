@@ -19,7 +19,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r"C:\Users\HP LAPTOP\glowinthedarkkk\FontsFree-Net-SLC_.ttf"
+font_path = r"C:\Users\Mbete\Downloads\FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -112,6 +112,10 @@ def display_splash_screen():
     splash_pen.shape("sodapdf-converted.gif")
     splash_pen.goto(0, -50)
     splash_pen.stamp()
+    turtle.update()  # Update the turtle graphics to ensure the image is displayed
+
+    # Pause for 3 seconds
+    time.sleep(3)
 
     # Display a countdown message
     splash_pen.color("white")
@@ -328,6 +332,9 @@ class Player(turtle.Turtle):
         else:
             return False
 
+    def goto_start_position(self):
+        self.goto(4 * 24, 1 * 24)
+
 
 class Treasure(turtle.Turtle):
     def __init__(self, x, y):
@@ -529,6 +536,36 @@ def setup_maze(level):
                 if character == "E":
                     enemies.append(Enemy(screen_x, screen_y))
 
+# Flag to track game over state
+game_over_flag = False
+
+# Function to handle game over
+def handle_game_over():
+    global game_over_flag
+    game_over_flag = True
+
+    # Additional game over actions or messages can be added here
+    print("Game Over!")
+    print("Press 'R' to restart or 'Q' to quit.")
+
+    # Set the game_over_flag to False
+    game_over_flag = False
+
+    # Loop to wait for user input after player dies
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    # Restart the game
+                    setup_maze(level[1])
+                    player.gold = 0
+                    game_over_flag = False
+                    return
+                elif event.key == pygame.K_q:
+                    # Quit the game
+                    pygame.quit()
+                    sys.exit()
+
 
 # Create class instances
 pen = Pen()
@@ -557,46 +594,63 @@ for enemy in enemies:
 
 # Main game loop
 while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
+            elif event.key == pygame.K_r:
+                # Restart the game
+                setup_maze(level[1])
+                player.gold = 0
+                game_over_flag = False
 
-    # Iterate through treasure list
-    for treasure in treasures:
-        if player.is_collision(treasure):
-            player.gold += treasure.gold
-            print("Player Gold: {}".format(player.gold))
-            treasure.destroy()
-            treasures.remove(treasure)
-    # Iterate through enemy list to see if the player collides
-    for enemy in enemies:
-        if player.is_collision(enemy):
-            print("Player Dies!")
+    if not game_over_flag:
+        # Iterate through treasure list
+        for treasure in treasures:
+            if player.is_collision(treasure):
+                player.gold += treasure.gold
+                print("Player Gold: {}".format(player.gold))
+                treasure.destroy()
+                treasures.remove(treasure)
 
-            # Loop for door
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    # Fill the screen with black
-                    screen.fill((0, 0, 0))
+        # Iterate through enemy list to see if the player collides
+        for enemy in enemies:
+            if player.is_collision(enemy):
+                # Call the game_over function when the player collides with an enemy
+                handle_game_over()
 
-                    # Draw the door image onto the screen
-                    screen.blit(door_image, (100, 200))
+    # Loop for door
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            # Fill the screen with black
+            screen.fill((0, 0, 0))
 
-                    # Update the display
-                    pygame.display.flip()
-                # Check for keyboard input to open or close the door
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_o:
-                        door.open()
-                    if event.key == pygame.K_c:
-                        door.close()
+            # Draw the door image onto the screen
+            screen.blit(door_image, (100, 200))
 
-                        # Check for collision between player and door
-                        if door.check_collision(player_rect):
-                            if door.is_open:
-                                # Player can pass through the open door
-                                print("Player passed through the door")
-                            else:
-                                # Player cannot pass through the closed door
-                                print("Player cannot pass through the closed door")
+            # Update the display
+            pygame.display.flip()
+
+        # Check for keyboard input to open or close the door
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_o:
+                door.open()
+            if event.key == pygame.K_c:
+                door.close()
+
+        # Check for collision between player and door
+        if door.check_collision(player_rect):
+            if door.is_open:
+                # Player can pass through the open door
+                print("Player passed through the door")
+            else:
+                # Player cannot pass through the closed door
+                print("Player cannot pass through the closed door")
 
     # Update scr
     wn.update()
