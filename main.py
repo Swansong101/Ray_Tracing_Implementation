@@ -13,13 +13,13 @@ GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-# Set up the screen
-screen_width, screen_height = 800, 600
+# Set up the scr
+screen_width, screen_height = 700, 700
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r"C:\Users\user\Downloads\FontsFree-Net-SLC_.ttf"
+font_path = r"C:\Users\HP LAPTOP\glowinthedarkkk\FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -65,7 +65,7 @@ def display_registration_form():
 
         screen.fill(BLACK)
 
-        # Calculate center of the screen
+        # Calculate center of the scr
         center_x, center_y = screen_width // 2, screen_height // 2
 
         draw_text("Glow in the Dark Maze - Player Registration", font, GREEN, center_x, 50)
@@ -89,25 +89,25 @@ print("Player Name:", user_info["name"])
 print("Player Age:", user_info["age"])
 
 
-# Function to display the splash screen with a countdown
+# Function to display the splash scr with a countdown
 def display_splash_screen():
     splash_screen = turtle.Screen()
     splash_screen.bgcolor("black")
     splash_screen.title("Maze Game Splash Screen")
     splash_screen.setup(700, 700)
 
-    # Create a turtle for the splash screen
+    # Create a turtle for the splash scr
     splash_pen = turtle.Turtle()
     splash_pen.speed(0)
     splash_pen.color("green")
     splash_pen.penup()
     splash_pen.hideturtle()
 
-    # Display the splash screen text and maze image
+    # Display the splash scr text and maze picture
     splash_pen.goto(0, 100)
     splash_pen.write("Glow in the Dark Maze Game", align="center", font=("Courier", 24, "normal"))
 
-    # Add maze image at the center
+    # Add maze picture at the center
     turtle.addshape("sodapdf-converted.gif")
     splash_pen.shape("sodapdf-converted.gif")
     splash_pen.goto(0, -50)
@@ -148,14 +148,13 @@ def setup_maze(level):
                 enemies.append(Enemy(screen_x, screen_y))
 
 
-
 # Characters available for selection
 characters = [
-    {"name": "Character 1", "image": "pennywise - v2.gif"},
-    {"name": "Character 2", "image": "pennywise - v2.gif"},
-    {"name": "Character 3", "image": "pennywise - v2.gif"},
-    {"name": "Character 4", "image": "pennywise - v2.gif"},
-    {"name": "Character 5", "image": "pennywise - v2.gif"},
+    {"name": "Character 1", "picture": "pennywise - v2.gif"},
+    {"name": "Character 2", "picture": "pennywise - v2.gif"},
+    {"name": "Character 3", "picture": "pennywise - v2.gif"},
+    {"name": "Character 4", "picture": "pennywise - v2.gif"},
+    {"name": "Character 5", "picture": "pennywise - v2.gif"},
 ]
 
 # Selected character index (default to the first character)
@@ -185,7 +184,7 @@ def character_selection():
 
         screen.fill(BLACK)
 
-        # Calculate center of the screen
+        # Calculate center of the scr
         center_x, center_y = screen_width // 2, screen_height // 2
 
         # Draw menu options
@@ -193,12 +192,11 @@ def character_selection():
         draw_text("Use Left/Right arrow keys to select", small_font, WHITE, center_x, center_y)
         draw_text("Press Enter to confirm", small_font, WHITE, center_x, center_y + 50)
 
-        # Display the selected character image
-        selected_character = pygame.image.load(characters[selected_character_index]["image"])
+        # Display the selected character picture
+        selected_character = pygame.image.load(characters[selected_character_index]["picture"])
         screen.blit(selected_character, (center_x - 50, center_y + 100))
 
         pygame.display.flip()
-
 
 
 # Function to display the main menu
@@ -226,7 +224,7 @@ def main_menu():
 
         screen.fill(BLACK)
 
-        # Calculate center of the screen
+        # Calculate center of the scr
         center_x, center_y = screen_width // 2, screen_height // 2
 
         # Draw menu options
@@ -242,13 +240,7 @@ def main_menu():
 # Display the main menu
 main_menu()
 
-
-
-
-
-
-
-# Call the function to display the splash screen
+# Call the function to display the splash scr
 display_splash_screen()
 
 wn = turtle.Screen()
@@ -422,6 +414,40 @@ class Enemy(turtle.Turtle):
         self.hideturtle()
 
 
+# Create a Door class
+class Door:
+    def __init__(self, position, size, picture):
+        self.position = position
+        self.size = size
+        self.image = picture
+        self.is_open = False
+
+    def draw(self, scr):
+        scr.blit(self.image, (self.position.x, self.position.y))
+
+    def open(self):
+        self.is_open = True
+
+    def close(self):
+        self.is_open = False
+
+    def check_collision(self, player__rect):
+        return player__rect.colliderect(pygame.Rect(self.position.x, self.position.y,
+                                                    self.size.x, self.size.y))
+
+
+# Load the door picture
+door_image = pygame.image.load("door.jpg")
+
+# Create door object
+door = Door(pygame.Vector2(500, 300), pygame.Vector2(100, 200), door_image)
+
+# Create player rectangle
+player_rect = pygame.Rect(400, 350, 50, 50)
+
+# Draw the door image onto the screen
+screen.blit(door_image, (door.position.x, door.position.y))
+
 # Create levels list
 level = [""]
 
@@ -468,7 +494,7 @@ def setup_maze(level):
         for x in range(len(level[y])):
             # Get the character at each x,y coordinate
             character = level[y][x]
-            # Calculate the screen x,y coordinates
+            # Calculate the scr x,y coordinates
             screen_x = -288 + (x * 24)
             screen_y = 288 - (y * 24)
             # Check if it an X
@@ -522,7 +548,7 @@ turtle.onkey(player.go_right, "Right")
 turtle.onkey(player.go_up, " Up")
 turtle.onkey(player.go_down, "Down")
 
-# Turn off screen updates
+# Turn off scr updates
 wn.tracer(0)
 
 # Start moving enemies
@@ -531,6 +557,7 @@ for enemy in enemies:
 
 # Main game loop
 while True:
+
     # Iterate through treasure list
     for treasure in treasures:
         if player.is_collision(treasure):
@@ -543,5 +570,33 @@ while True:
         if player.is_collision(enemy):
             print("Player Dies!")
 
-    # Update screen
+            # Loop for door
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    # Fill the screen with black
+                    screen.fill((0, 0, 0))
+
+                    # Draw the door image onto the screen
+                    screen.blit(door_image, (100, 200))
+
+                    # Update the display
+                    pygame.display.flip()
+                # Check for keyboard input to open or close the door
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_o:
+                        door.open()
+                    if event.key == pygame.K_c:
+                        door.close()
+
+                        # Check for collision between player and door
+                        if door.check_collision(player_rect):
+                            if door.is_open:
+                                # Player can pass through the open door
+                                print("Player passed through the door")
+                            else:
+                                # Player cannot pass through the closed door
+                                print("Player cannot pass through the closed door")
+
+    # Update scr
     wn.update()
