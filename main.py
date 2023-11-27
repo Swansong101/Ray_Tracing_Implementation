@@ -1,9 +1,10 @@
-import time
-import turtle
 import math
 import random
-import pygame
 import sys
+import time
+import turtle
+
+import pygame
 
 # Initialize Pygame
 pygame.init()
@@ -19,7 +20,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r"C:\Users\Mbete\Downloads\FontsFree-Net-SLC_.ttf"
+font_path = r"C:\Users\user\Downloads\FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -155,10 +156,10 @@ def setup_maze(level):
 # Characters available for selection
 characters = [
     {"name": "Character 1", "picture": "pennywise - v2.gif"},
-    {"name": "Character 2", "picture": "pennywise - v2.gif"},
-    {"name": "Character 3", "picture": "pennywise - v2.gif"},
-    {"name": "Character 4", "picture": "pennywise - v2.gif"},
-    {"name": "Character 5", "picture": "pennywise - v2.gif"},
+    {"name": "Character 2", "picture": "player_left.gif"},
+    {"name": "Character 3", "picture": "player_left.gif"},
+    {"name": "Character 4", "picture": "player_right.gif"},
+    {"name": "Character 5", "picture": "player_right.gif"},
 ]
 
 # Selected character index (default to the first character)
@@ -205,7 +206,8 @@ def character_selection():
 
 # Function to display the main menu
 def main_menu():
-    while True:
+    selected_character = None
+    while selected_character is None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -216,15 +218,21 @@ def main_menu():
                     sys.exit()
                 elif event.key == pygame.K_1:
                     # Start the game
+                    selected_character = character_selection()
                     return
                 elif event.key == pygame.K_2:
                     # Resume the game
+
                     return
                 elif event.key == pygame.K_3:
                     # Character selection
-                    selected_character = character_selection()
+                    character_selection()
                     print("Selected Character: {}".format(selected_character["name"]))
                     # Add logic to use the selected character in the game
+                elif event.key == pygame.K_4:
+                    # Quit the game
+                    pygame.quit()
+                    sys.exit()
 
         screen.fill(BLACK)
 
@@ -239,6 +247,8 @@ def main_menu():
         draw_text("4. Quit", small_font, WHITE, center_x, center_y + 150)
 
         pygame.display.flip()
+
+    player = Player(selected_character)
 
 
 # Display the main menu
@@ -274,9 +284,9 @@ class Pen(turtle.Turtle):
 
 
 class Player(turtle.Turtle):
-    def __init__(self):
+    def __init__(self, selected_character):
         turtle.Turtle.__init__(self)
-        self.shape("player_right.gif")
+        self.shape(selected_character["picture"])
         self.color("white")
         self.penup()
         self.speed(0)
@@ -536,8 +546,10 @@ def setup_maze(level):
                 if character == "E":
                     enemies.append(Enemy(screen_x, screen_y))
 
+
 # Flag to track game over state
 game_over_flag = False
+
 
 # Function to handle game over
 def handle_game_over():
@@ -569,7 +581,7 @@ def handle_game_over():
 
 # Create class instances
 pen = Pen()
-player = Player()
+player = Player(characters[selected_character_index])
 
 # Create wall coordinates
 walls = []
@@ -593,11 +605,17 @@ for enemy in enemies:
     turtle.ontimer(enemy.move, t=250)
 
 # Main game loop
+
+running = True
+clock = pygame.time.Clock()
+
+countdown_start_time = pygame.time.get_ticks()
+countdown_duration = 3000
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 pygame.quit()
@@ -635,6 +653,11 @@ while True:
 
             # Update the display
             pygame.display.flip()
+
+            clock.tick(10)
+            current_time = pygame.time.get_ticks()
+            if current_time - countdown_start_time >= countdown_duration:
+                break
 
         # Check for keyboard input to open or close the door
         if event.type == pygame.KEYDOWN:
