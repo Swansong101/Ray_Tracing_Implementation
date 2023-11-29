@@ -13,6 +13,10 @@ pygame.init()
 # Starting the mixer
 mixer.init()
 
+#Game status
+# Flag to track game over state
+game_over_flag = False
+
 # Set up colors
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
@@ -604,14 +608,14 @@ def setup_maze(level):
                 doors.append(Door(screen_x, screen_y))
 
 
-# Flag to track game over state
-game_over_flag = False
-
 
 # Function to handle game over
 def handle_game_over():
     global game_over_flag
-
+    
+    mixer.music.load("audio//gameover.mp3")
+    # Start playing the song 
+    mixer.music.play()
     if all(treasure.gold == 0 for treasure in treasures):
         print("Congratulations! You collected all treasures and proceed to the next level.")
         setup_maze(level[2])  # Assuming index 2 corresponds to the second level
