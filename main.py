@@ -167,11 +167,10 @@ def setup_maze(level):
 
 # Characters available for selection
 characters = [
-    {"name": "Character 1", "picture": ".//pennywise - v2.gif"},
-    {"name": "Character 2", "picture": ".//player_left.gif"},
-    {"name": "Character 3", "picture": ".//player_left.gif"},
-    {"name": "Character 4", "picture": ".//player_right.gif"},
-    {"name": "Character 5", "picture": ".//player_right.gif"},
+    {"name": "Character 1", "picture": ".//player_right.gif"},
+    {"name": "Character 2", "picture": ".//player_2.gif"},
+    {"name": "Character 3", "picture": ".//player_3.gif"},
+    {"name": "Character 4", "picture": ".//player_4.gif"}
 ]
 
 # Selected character index (default to the first character)
@@ -277,7 +276,7 @@ wn.tracer(0)
 
 # Register shapes
 images = ["player_right.gif", "player_right.gif", "treasure.gif", "wall.gif",
-          "pennywise - v2.gif"]
+          "pennywise - v2.gif", "door.gif"]
 for image in images:
     turtle.register_shape(image)
 
@@ -358,6 +357,15 @@ class Player(turtle.Turtle):
     def goto_start_position(self):
         self.goto(4 * 24, 1 * 24)
 
+    def is_collision_door(self, other):
+        a = self.xcor() - other.xcor()
+        b = self.ycor() - other.ycor()
+        distance = math.sqrt((a ** 2) + (b ** 2))
+
+        if distance < 5:
+            return True
+        else:
+            return False
 
 class Treasure(turtle.Turtle):
     def __init__(self, x, y):
@@ -427,7 +435,7 @@ class Enemy(turtle.Turtle):
             # Choose a different direction
             self.direction = random.choice(["up", "down", "left", "right"])
         # Set timer to move to next time
-        turtle.ontimer(self.move, t=random.randint(100, 300))
+        turtle.ontimer(self.move, 300)
 
     def is_close(self, other):
         a = self.xcor() - other.xcor()
@@ -443,40 +451,25 @@ class Enemy(turtle.Turtle):
         self.goto(2000, 2000)
         self.hideturtle()
 
+class Door(turtle.Turtle):
+    def __init__(self, x, y):
+        turtle.Turtle.__init__(self)
+        self.shape("door.gif")  # Use the door image you created
+        self.color("brown")  # Set the color or any other properties
+        self.penup()
+        self.speed(0)
+        self.goto(x, y)
 
-# Create a Door class
-class Door:
-    def __init__(self, position, size, picture):
-        self.position = position
-        self.size = size
-        self.image = picture
-        self.is_open = False
+    def is_collision(self, other):
+        a = self.xcor() - other.xcor()
+        b = self.ycor() - other.ycor()
+        distance = math.sqrt((a ** 2) + (b ** 2))
 
-    def draw(self, scr):
-        scr.blit(self.image, (self.position.x, self.position.y))
+        if distance < 5:
+            return True
+        else:
+            return False
 
-    def open(self):
-        self.is_open = True
-
-    def close(self):
-        self.is_open = False
-
-    def check_collision(self, player__rect):
-        return player__rect.colliderect(pygame.Rect(self.position.x, self.position.y,
-                                                    self.size.x, self.size.y))
-
-
-# Load the door picture
-door_image = pygame.image.load("door.jpg")
-
-# Create door object
-door = Door(pygame.Vector2(500, 300), pygame.Vector2(100, 200), door_image)
-
-# Create player rectangle
-player_rect = pygame.Rect(400, 350, 50, 50)
-
-# Draw the door image onto the screen
-screen.blit(door_image, (door.position.x, door.position.y))
 
 # Create levels list
 level = [""]
@@ -484,7 +477,7 @@ level = [""]
 # Define first level
 level_1 = [
     "XXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XP XXXXXXE          XXXXX",
+    "XP XXXXXX           XXXXX",
     "X  XXXXXXX  XXXXXX  XXXXX",
     "X       XX  XXXXXX  XXXXX",
     "X       XX  XXX       EXX",
@@ -498,28 +491,91 @@ level_1 = [
     "XXXXXXXXXXXX     XXXXX  X",
     "XXXXXXXXXXXXXXX  XXXXX  X",
     "XXX  XXXXXXXXXX         X",
-    "XXXE                    X",
-    "XXX         XXXXXXXXXXXXX",
+    "XXX                     X",
+    "XXXE        XXXXXXXXXXXXX",
     "XXXXXXXXXX  XXXXXXXXXXXXX",
     "XXXXXXXXXX        T     X",
     "XX   XXXXX              X",
     "XX  TXXXXXXXXXXXXX  XXXXX",
     "XX    XXXXXXXXXXXX  XXXXX",
     "XX           XXX      T X",
-    "XXXE                    X",
+    "XXX                    DX",
     "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
+
+# Define second level
+level_2 = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXX",
+    "X  XXXXXXE          XXXXX",
+    "X  XXXXXXX  XXXXXX  XXXXX",
+    "X       XX  XXXXXX  XXXXX",
+    "XP      XX  XXX       EXX",
+    "XXXXXX  XX  XXXT       XX",
+    "XXXXXX  XX  XXXXXX  XXXXX",
+    "XXXXXX  XX    XXXX  XXXXX",
+    "X  XXX        XXXXT XXXXX",
+    "X  XXX  XXXXXXXXXXXXXXXXX",
+    "X         XXXXXXXXXXXXXXX",
+    "X               TXXXXXXXX",
+    "XXXXXXXXXXXX     XXXXX  X",
+    "XXXXXXXXXXXXXXX  XXXXX  X",
+    "XXX  XXXXXXXXXX     XX  X",
+    "XXX                     X",
+    "XXXXXX      XXXXXXXXXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXX",
+    "XXXXXXXXXX        T     X",
+    "XX   XXXXXXXXX          X",
+    "XX  TXXXXXXXXXXXXX  XXXXX",
+    "XX    XXXXXXXXXXXX  XXXXX",
+    "XX          EXXX      TXX",
+    "XXXT          DXXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
+# Define third level
+level_3 = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXX",
+    "X  XXXXXXE          XXXXX",
+    "X  XXXXXXX  XXXXXX  XXXXX",
+    "X       XX  XXXXXX  XXXXX",
+    "XP      XX  XXX       EXX",
+    "XXXXXX  XX  XXXT       XX",
+    "XXXXXX  XX  XXXXXX  XXXXX",
+    "XXXXXX  XX    XXXX  XXXXX",
+    "X  XXX        XXXXT XXXXX",
+    "X  XXX  XXXXXXXXXXXXXXXXX",
+    "X         XXXXXXXXXXXXXXX",
+    "X               TXXXXXXXX",
+    "XXXXXXXXXXXX     XXXXX  X",
+    "XXXXXXXXXXXXXXX  XXXXX  X",
+    "XXX  XXXXXXXXXX     XX  X",
+    "XXXE                    X",
+    "XXXXXX      XXXXXXXXXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXX",
+    "XXXXXXXXXX        T     X",
+    "XX   XXXXXXXXX          X",
+    "XX  TXXXXXXXXXXXXX  XXXXX",
+    "XX    XXXXXXXXXXXX  XXXXX",
+    "XX          EXXX      TXX",
+    "XXXT          XXXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
 
 # Add a treasure list
 treasures = []
 # Add enemies list
 enemies = []
-# Add maze to mazes list
+# Add maze to level list
 level.append(level_1)
-
+# Add the second level to the levels list
+level.append(level_2)
+# Add the third level to the levels list
+level.append(level_3)
 
 # Create level setup function
 def setup_maze(level):
+    global doors
     for y in range(len(level)):
         for x in range(len(level[y])):
             # Get the character at each x,y coordinate
@@ -542,22 +598,10 @@ def setup_maze(level):
                 treasures.append(Treasure(screen_x, screen_y))
 
             if character == "E":
-                # Check if it an X
-                if character == "X":
-                    pen.goto(screen_x, screen_y)
-                    pen.shape("wall.gif")
-                    pen.stamp()
-                    # Add coordinates to wall list
-                    walls.append((screen_x, screen_y))
+                enemies.append(Enemy(screen_x, screen_y))
 
-                if character == "P":
-                    player.goto(screen_x, screen_y)
-
-                if character == "T":
-                    treasures.append(Treasure(screen_x, screen_y))
-
-                if character == "E":
-                    enemies.append(Enemy(screen_x, screen_y))
+            if character == "D":
+                doors.append(Door(screen_x, screen_y))
 
 
 # Flag to track game over state
@@ -567,14 +611,16 @@ game_over_flag = False
 # Function to handle game over
 def handle_game_over():
     global game_over_flag
-    game_over_flag = True
 
-    # Additional game over actions or messages can be added here
-    print("Game Over!")
-    print("Press 'R' to restart or 'Q' to quit.")
-
-    # Set the game_over_flag to False
-    game_over_flag = False
+    if all(treasure.gold == 0 for treasure in treasures):
+        print("Congratulations! You collected all treasures and proceed to the next level.")
+        setup_maze(level[2])  # Assuming index 2 corresponds to the second level
+        player.gold = 0
+        game_over_flag = False
+    else:
+        # Additional game over actions or messages can be added here
+        print("Game Over! Press 'R' to restart or 'Q' to quit.")
+        game_over_flag = False
 
     # Loop to wait for user input after player dies
     while True:
@@ -591,13 +637,15 @@ def handle_game_over():
                     pygame.quit()
                     sys.exit()
 
-
 # Create class instances
 pen = Pen()
 player = Player(characters[selected_character_index])
 
 # Create wall coordinates
 walls = []
+
+# Create door coordinates
+doors = []
 
 # Set up the level
 setup_maze(level[1])
@@ -654,39 +702,12 @@ while True:
                 # Call the game_over function when the player collides with an enemy
                 handle_game_over()
 
-    # Loop for door
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            # Fill the screen with black
-            screen.fill((0, 0, 0))
-
-            # Draw the door image onto the screen
-            screen.blit(door_image, (100, 200))
-
-            # Update the display
-            pygame.display.flip()
-
-            clock.tick(10)
-            current_time = pygame.time.get_ticks()
-            if current_time - countdown_start_time >= countdown_duration:
-                break
-
-        # Check for keyboard input to open or close the door
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_o:
-                door.open()
-            if event.key == pygame.K_c:
-                door.close()
-
-        # Check for collision between player and door
-        if door.check_collision(player_rect):
-            if door.is_open:
-                # Player can pass through the open door
-                print("Player passed through the door")
-            else:
-                # Player cannot pass through the closed door
-                print("Player cannot pass through the closed door")
+        # Check if the player reached the door
+        if any(door.is_collision(player) for door in doors):
+            # Transition to the next level
+            setup_maze(level[2])  # Assuming index 2 corresponds to the second level
+            player.gold = 0
+            game_over_flag = False
 
     # Update scr
     wn.update()
