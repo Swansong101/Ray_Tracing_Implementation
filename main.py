@@ -467,7 +467,7 @@ class Door:
 
 
 # Load the door picture
-door_image = pygame.image.load("door.jpg")
+door_image = pygame.image.load("door.gif")
 
 # Create door object
 door = Door(pygame.Vector2(500, 300), pygame.Vector2(100, 200), door_image)
