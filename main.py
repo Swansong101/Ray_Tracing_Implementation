@@ -3,9 +3,7 @@ import random
 import sys
 import time
 import turtle
-
 import pygame
-
 from pygame import mixer
 
 # Initialize Pygame
@@ -26,7 +24,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r"C:\Users\user\Downloads\FontsFree-Net-SLC_.ttf"
+font_path = r"C:\Users\Mbete\Downloads\FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -143,7 +141,8 @@ def display_splash_screen():
         time.sleep(1)
 
 
-def draw_level_info(level_number, center_x, screen_height):
+def draw_level_info(level_number, screen_width, screen_height):
+    center_x, center_y = screen_width // 2, screen_height // 2
     draw_text("Level: {}".format(level_number), small_font, GREEN, center_x, screen_height - 30)
 
 
@@ -535,9 +534,9 @@ level_2 = [
     "XXXXXXXXXX        T     X",
     "XX   XXXXXXXXX          X",
     "XX  TXXXXXXXXXXXXX  XXXXX",
-    "XX    XXXXXXXXXXXX  XXXXX",
-    "XX          EXXX      TXX",
-    "XXXT          DXXXXXXXXXX",
+    "XX    XXXXXXXXXXX   XXXXX",
+    "XX          EXXX   XXXXXX",
+    "XXXT               DXXXXX",
     "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
 
@@ -554,19 +553,19 @@ level_3 = [
     "X  XXX        XXXXT XXXXX",
     "X  XXX  XXXXXXXXXXXXXXXXX",
     "X         XXXXXXXXXXXXXXX",
-    "X               TXXXXXXXX",
+    "XXX             TXXXXXXXX",
     "XXXXXXXXXXXX     XXXXX  X",
     "XXXXXXXXXXXXXXX  XXXXX  X",
     "XXX  XXXXXXXXXX     XX  X",
     "XXXE                    X",
-    "XXXXXX      XXXXXXXXXXXXX",
-    "XXXXXXXXXX  XXXXXXXXXXXXX",
-    "XXXXXXXXXX        T     X",
-    "XX   XXXXXXXXX          X",
+    "XXXXXX      XXXXXXXX XXXX",
+    "XXXXXXXXXX  XXXXXXXX XXXX",
+    "XXXXXXXXXX        TX  XXX",
+    "XX   XXXXXXXXX     X    X",
     "XX  TXXXXXXXXXXXXX  XXXXX",
-    "XX    XXXXXXXXXXXX  XXXXX",
-    "XX          EXXX      TXX",
-    "XXXT          XXXXXXXXXXX",
+    "XXX   XXXXXXXXXXXX  XXXXX",
+    "XXX       EXXX        TXX",
+    "XXXT                XXXXX",
     "XXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
 
@@ -628,7 +627,6 @@ def handle_game_over():
         player.gold = 0
         game_over_flag = False
     else:
-        # Additional game over actions or messages can be added here
         print("Game Over! Press 'R' to restart or 'Q' to quit.")
         game_over_flag = False
 
@@ -637,8 +635,10 @@ def handle_game_over():
         turtle.goto(0, 0)
         turtle.color("red")
         turtle.write("Game Over", align="center", font=("Arial", 48, "normal"))
-        turtle.update()
-        #turtle.bye()
+
+        # Play game over sound
+        mixer.music.load("audio//mixkit-arcade-retro-game-over-213.wav")
+        mixer.music.play()
 
     # Loop to wait for user input after player dies
     while game_over_flag:
@@ -728,9 +728,12 @@ while running:
             player.gold = 0
             game_over_flag = False
 
+    # Calculate center of the screen
+    center_x, center_y = screen_width // 2, screen_height // 2
+
     # Update screen
     wn.update()
-    draw_level_info(current_level)
+    draw_level_info(current_level, screen_width, screen_height)
 
     # Close the turtle graphics window when the game ends
 if game_over_flag:
