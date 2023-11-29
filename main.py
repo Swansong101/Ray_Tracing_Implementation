@@ -143,6 +143,10 @@ def display_splash_screen():
         time.sleep(1)
 
 
+def draw_level_info(level_number, center_x, screen_height):
+    draw_text("Level: {}".format(level_number), small_font, GREEN, center_x, screen_height - 30)
+
+
 # Function to set up the maze
 def setup_maze(level):
     for y in range(len(level)):
@@ -173,7 +177,7 @@ characters = [
     {"name": "Character 2", "picture": "player_right.gif"},
     {"name": "Character 3", "picture": "player_right.gif"},
     {"name": "Character 4", "picture": "player_right.gif"}
-]
+ ]
 
 # Selected character index (default to the first character)
 selected_character_index = 0
@@ -580,7 +584,8 @@ level.append(level_3)
 
 # Create level setup function
 def setup_maze(level):
-    global doors
+    global doors, current_level
+    current_level += 1
     for y in range(len(level)):
         for x in range(len(level[y])):
             # Get the character at each x,y coordinate
@@ -661,7 +666,8 @@ walls = []
 doors = []
 
 # Set up the level
-setup_maze(level[1])
+current_level = 1
+setup_maze(level[current_level])
 print(walls)
 
 # Keyboard Binding
@@ -724,6 +730,7 @@ while running:
 
     # Update screen
     wn.update()
+    draw_level_info(current_level)
 
     # Close the turtle graphics window when the game ends
 if game_over_flag:
