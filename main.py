@@ -13,9 +13,7 @@ pygame.init()
 # Starting the mixer
 mixer.init()
 
-#Game status
-# Flag to track game over state
-game_over_flag = False
+game_over_sound =  mixer.music.load("audio//mixkit-arcade-retro-game-over-213.wav")
 
 # Set up colors
 GREEN = (0, 255, 0)
@@ -171,10 +169,10 @@ def setup_maze(level):
 
 # Characters available for selection
 characters = [
-    {"name": "Character 1", "picture": ".//player_right.gif"},
-    {"name": "Character 2", "picture": ".//player_2.gif"},
-    {"name": "Character 3", "picture": ".//player_3.gif"},
-    {"name": "Character 4", "picture": ".//player_4.gif"}
+    {"name": "Character 1", "picture": "player_right.gif"},
+    {"name": "Character 2", "picture": "player_right.gif"},
+    {"name": "Character 3", "picture": "player_right.gif"},
+    {"name": "Character 4", "picture": "player_right.gif"}
 ]
 
 # Selected character index (default to the first character)
@@ -299,9 +297,9 @@ class Pen(turtle.Turtle):
 
 
 class Player(turtle.Turtle):
-    def _init_(self, selected_character):
-        turtle.Turtle._init_(self)
-        #self.shape(selected_character["picture"])
+    def __init__(self, character):
+        turtle.Turtle.__init__(self)
+        self.shape(character["picture"])
         self.shape("player_right.gif")
         self.color("white")
         self.penup()
@@ -351,7 +349,7 @@ class Player(turtle.Turtle):
     def is_collision(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a * 2) + (b * 2))
+        distance = math.sqrt((a ** 2) + (b ** 2))
 
         if distance < 5:
             return True
@@ -364,7 +362,7 @@ class Player(turtle.Turtle):
     def is_collision_door(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a * 2) + (b * 2))
+        distance = math.sqrt((a ** 2) + (b ** 2))
 
         if distance < 5:
             return True
@@ -372,8 +370,9 @@ class Player(turtle.Turtle):
             return False
 
 class Treasure(turtle.Turtle):
-    def _init_(self, x, y):
-        turtle.Turtle._init_(self)
+    def __init__(self, x, y):
+        turtle.Turtle.__init__(self)
+        turtle.register_shape("treasure.gif")
         self.shape("treasure.gif")
         self.color("gold")
         self.penup()
@@ -387,8 +386,9 @@ class Treasure(turtle.Turtle):
 
 
 class Enemy(turtle.Turtle):
-    def _init_(self, x, y):
-        turtle.Turtle._init_(self)
+    def __init__(self, x, y):
+        turtle.Turtle.__init__(self)
+        turtle.register_shape("pennywise - v2.gif")
         self.shape("pennywise - v2.gif")
         self.color("gold")
         self.penup()
@@ -444,7 +444,7 @@ class Enemy(turtle.Turtle):
     def is_close(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a * 2) + (b * 2))
+        distance = math.sqrt((a ** 2) + (b ** 2))
 
         if distance < 75:
             return True
@@ -456,8 +456,9 @@ class Enemy(turtle.Turtle):
         self.hideturtle()
 
 class Door(turtle.Turtle):
-    def _init_(self, x, y):
-        turtle.Turtle._init_(self)
+    def __init__(self, x, y):
+        turtle.Turtle.__init__(self)
+        turtle.register_shape("door.gif")
         self.shape("door.gif")  # Use the door image you created
         self.color("brown")  # Set the color or any other properties
         self.penup()
@@ -467,7 +468,7 @@ class Door(turtle.Turtle):
     def is_collision(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a * 2) + (b * 2))
+        distance = math.sqrt((a ** 2) + (b ** 2))
 
         if distance < 5:
             return True
@@ -528,8 +529,8 @@ level_2 = [
     "XXXXXX      XXXXXXXXXXXXX",
     "XXXXXXXXXX  XXXXXXXXXXXXX",
     "XXXXXXXXXX        T     X",
-    "XXT   XXXXXXXXX          X",
-    "XX                   XXXXX",
+    "XX   XXXXXXXXX          X",
+    "XX  TXXXXXXXXXXXXX  XXXXX",
     "XX    XXXXXXXXXXXX  XXXXX",
     "XX          EXXX      TXX",
     "XXXT          DXXXXXXXXXX",
@@ -608,14 +609,14 @@ def setup_maze(level):
                 doors.append(Door(screen_x, screen_y))
 
 
+# Flag to track game over state
+game_over_flag = False
+
 
 # Function to handle game over
 def handle_game_over():
     global game_over_flag
-    
-    mixer.music.load("audio//gameover.mp3")
-    # Start playing the song 
-    mixer.music.play()
+
     if all(treasure.gold == 0 for treasure in treasures):
         print("Congratulations! You collected all treasures and proceed to the next level.")
         setup_maze(level[2])  # Assuming index 2 corresponds to the second level
@@ -625,6 +626,7 @@ def handle_game_over():
         # Additional game over actions or messages can be added here
         print("Game Over! Press 'R' to restart or 'Q' to quit.")
         game_over_flag = False
+
         turtle.penup()
         turtle.hideturtle()
         turtle.goto(0, 0)
