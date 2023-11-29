@@ -10,7 +10,7 @@ from pygame import mixer
 
 # Initialize Pygame
 pygame.init()
-# Starting the mixer 
+# Starting the mixer
 mixer.init()
 
 #Game status
@@ -48,9 +48,9 @@ def display_registration_form():
     active_field = "name"
 
     #Start playing theme song
-    # Loading the song 
+    # Loading the song
     mixer.music.load("audio//theme.mp3")
-    # Start playing the song 
+    # Start playing the song
     mixer.music.play()
 
     while True:
@@ -103,7 +103,7 @@ display_registration_form()
 print("Player Name:", user_info["name"])
 print("Player Age:", user_info["age"])
 # Stop the theme song
-mixer.music.stop() 
+mixer.music.stop()
 
 
 # Function to display the splash scr with a countdown
@@ -528,8 +528,8 @@ level_2 = [
     "XXXXXX      XXXXXXXXXXXXX",
     "XXXXXXXXXX  XXXXXXXXXXXXX",
     "XXXXXXXXXX        T     X",
-    "XX   XXXXXXXXX          X",
-    "XX  TXXXXXXXXXXXXX  XXXXX",
+    "XXT   XXXXXXXXX          X",
+    "XX                   XXXXX",
     "XX    XXXXXXXXXXXX  XXXXX",
     "XX          EXXX      TXX",
     "XXXT          DXXXXXXXXXX",
