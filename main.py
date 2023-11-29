@@ -6,8 +6,12 @@ import turtle
 
 import pygame
 
+from pygame import mixer
+
 # Initialize Pygame
 pygame.init()
+# Starting the mixer 
+mixer.init()
 
 # Set up colors
 GREEN = (0, 255, 0)
@@ -20,7 +24,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r"C:\Users\user\Downloads\FontsFree-Net-SLC_.ttf"
+font_path = r".\\FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -38,6 +42,12 @@ def display_registration_form():
     name_input = ""
     age_input = ""
     active_field = "name"
+
+    #Start playing theme song
+    # Loading the song 
+    mixer.music.load("audio//theme.mp3")
+    # Start playing the song 
+    mixer.music.play()
 
     while True:
         for event in pygame.event.get():
@@ -88,6 +98,8 @@ display_registration_form()
 # Now you can access user_info["name"] and user_info["age"] in your game code
 print("Player Name:", user_info["name"])
 print("Player Age:", user_info["age"])
+# Stop the theme song
+mixer.music.stop() 
 
 
 # Function to display the splash scr with a countdown
@@ -155,11 +167,11 @@ def setup_maze(level):
 
 # Characters available for selection
 characters = [
-    {"name": "Character 1", "picture": "pennywise - v2.gif"},
-    {"name": "Character 2", "picture": "player_left.gif"},
-    {"name": "Character 3", "picture": "player_left.gif"},
-    {"name": "Character 4", "picture": "player_right.gif"},
-    {"name": "Character 5", "picture": "player_right.gif"},
+    {"name": "Character 1", "picture": ".//pennywise - v2.gif"},
+    {"name": "Character 2", "picture": ".//player_left.gif"},
+    {"name": "Character 3", "picture": ".//player_left.gif"},
+    {"name": "Character 4", "picture": ".//player_right.gif"},
+    {"name": "Character 5", "picture": ".//player_right.gif"},
 ]
 
 # Selected character index (default to the first character)
@@ -286,7 +298,8 @@ class Pen(turtle.Turtle):
 class Player(turtle.Turtle):
     def __init__(self, selected_character):
         turtle.Turtle.__init__(self)
-        self.shape(selected_character["picture"])
+        #self.shape(selected_character["picture"])
+        self.shape("player_right.gif")
         self.color("white")
         self.penup()
         self.speed(0)
