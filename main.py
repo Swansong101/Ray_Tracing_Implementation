@@ -733,8 +733,13 @@ while running:
 
     # Update screen
     wn.update()
+
+    # Draw level information
     draw_level_info(current_level, screen_width, screen_height)
 
     # Close the turtle graphics window when the game ends
-if game_over_flag:
-    turtle.bye()
+    if game_over_flag:
+        turtle.bye()
+
+    # Add a delay to control the loop's speed
+    clock.tick(10)
