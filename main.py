@@ -24,7 +24,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r".\\FontsFree-Net-SLC_.ttf"
+font_path = r"C:\Users\user\Downloads\FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -286,8 +286,8 @@ reflectors = []
 
 # Create path
 class Pen(turtle.Turtle):
-    def __init__(self):
-        turtle.Turtle.__init__(self)
+    def _init_(self):
+        turtle.Turtle._init_(self)
         self.shape("square")
         self.color("green")
         self.penup()
@@ -295,8 +295,8 @@ class Pen(turtle.Turtle):
 
 
 class Player(turtle.Turtle):
-    def __init__(self, selected_character):
-        turtle.Turtle.__init__(self)
+    def _init_(self, selected_character):
+        turtle.Turtle._init_(self)
         #self.shape(selected_character["picture"])
         self.shape("player_right.gif")
         self.color("white")
@@ -347,7 +347,7 @@ class Player(turtle.Turtle):
     def is_collision(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a ** 2) + (b ** 2))
+        distance = math.sqrt((a * 2) + (b * 2))
 
         if distance < 5:
             return True
@@ -360,7 +360,7 @@ class Player(turtle.Turtle):
     def is_collision_door(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a ** 2) + (b ** 2))
+        distance = math.sqrt((a * 2) + (b * 2))
 
         if distance < 5:
             return True
@@ -368,8 +368,8 @@ class Player(turtle.Turtle):
             return False
 
 class Treasure(turtle.Turtle):
-    def __init__(self, x, y):
-        turtle.Turtle.__init__(self)
+    def _init_(self, x, y):
+        turtle.Turtle._init_(self)
         self.shape("treasure.gif")
         self.color("gold")
         self.penup()
@@ -383,8 +383,8 @@ class Treasure(turtle.Turtle):
 
 
 class Enemy(turtle.Turtle):
-    def __init__(self, x, y):
-        turtle.Turtle.__init__(self)
+    def _init_(self, x, y):
+        turtle.Turtle._init_(self)
         self.shape("pennywise - v2.gif")
         self.color("gold")
         self.penup()
@@ -440,7 +440,7 @@ class Enemy(turtle.Turtle):
     def is_close(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a ** 2) + (b ** 2))
+        distance = math.sqrt((a * 2) + (b * 2))
 
         if distance < 75:
             return True
@@ -452,8 +452,8 @@ class Enemy(turtle.Turtle):
         self.hideturtle()
 
 class Door(turtle.Turtle):
-    def __init__(self, x, y):
-        turtle.Turtle.__init__(self)
+    def _init_(self, x, y):
+        turtle.Turtle._init_(self)
         self.shape("door.gif")  # Use the door image you created
         self.color("brown")  # Set the color or any other properties
         self.penup()
@@ -463,7 +463,7 @@ class Door(turtle.Turtle):
     def is_collision(self, other):
         a = self.xcor() - other.xcor()
         b = self.ycor() - other.ycor()
-        distance = math.sqrt((a ** 2) + (b ** 2))
+        distance = math.sqrt((a * 2) + (b * 2))
 
         if distance < 5:
             return True
@@ -621,9 +621,16 @@ def handle_game_over():
         # Additional game over actions or messages can be added here
         print("Game Over! Press 'R' to restart or 'Q' to quit.")
         game_over_flag = False
+        turtle.penup()
+        turtle.hideturtle()
+        turtle.goto(0, 0)
+        turtle.color("red")
+        turtle.write("Game Over", align="center", font=("Arial", 48, "normal"))
+        turtle.update()
+        #turtle.bye()
 
     # Loop to wait for user input after player dies
-    while True:
+    while game_over_flag:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
@@ -673,7 +680,7 @@ clock = pygame.time.Clock()
 countdown_start_time = pygame.time.get_ticks()
 countdown_duration = 3000
 
-while True:
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -709,5 +716,9 @@ while True:
             player.gold = 0
             game_over_flag = False
 
-    # Update scr
+    # Update screen
     wn.update()
+
+    # Close the turtle graphics window when the game ends
+if game_over_flag:
+    turtle.bye()
