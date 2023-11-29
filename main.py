@@ -592,7 +592,7 @@ def setup_maze(level):
             # Calculate the scr x,y coordinates
             screen_x = -288 + (x * 24)
             screen_y = 288 - (y * 24)
-            # Check if it an X
+            # Check if it an X.
             if character == "X":
                 pen.goto(screen_x, screen_y)
                 pen.shape("wall.gif")
