@@ -40,23 +40,50 @@ The game currently has three levels with increasing difficulty. Each level intro
 
 ## Dependencies
 
-- Python 3.x
-- Pygame
-- Turtle graphics
-- Pygame and Turtle sound libraries
+### Python 3.x
+ Download Python 3.x from the [official Python website](https://www.python.org/downloads/). Choose the version that matches
+  your operating system. Follow the installation instructions provided on the website for your specific operating system.
+
+   - For Windows, make sure to check the option that says "Add Python to PATH" during installation.
+   - For macOS, you may need to adjust your `PATH` environment variable after installation.
+   - For Linux, Python is often pre-installed. If not, use your package manager to install it.
+
+   Ensure that Python is successfully installed by opening a terminal or command prompt and typing:
+
+   ```bash
+   python --version
+   ```
+
+### Pygame
+You can install Pygame using pip, the Python package installer. Open a terminal or command prompt and run the following command:
+```bash
+pip install pygame
+```
+
+### Turtle graphics
+Turtle graphics is included in the Python standard library, so there's no separate installation needed. You can use it directly in your Python scripts.
+
+### Turtle sound libraries
+We used mixer from the pygame library and the code used is
+```bash
+import pygame
+pygame.init()
+pygame.mixer.init()
+```
 
 ## Credits
 
 - **Game Development:**
-  - [Ruby Mbete]
-  - [Alex Wafula]
-  - [Nicole Owens]
-  - [Peter Kimutai]
-  - [Charis Orony]
+  - [Ruby Mbete](https://github.com/r-mbete)
+  - [Alex Wafula](https://github.com/alexwafula)
+  - [Charis Orony](https://github.com/quantumfelonies)
+  - [Nicole Owens](https://github.com/Swansong101)
+  - [Peter Kimutai](https://github.com/KimutaiPeter)
+  
 
 - **Sound Effects:**
-  - [Peter Kimutai]
-  - [Charis Orony]
+  - [Peter Kimutai](https://github.com/KimutaiPeter)
+  - [Charis Orony](https://github.com/quantumfelonies)
     
 ## License
 
