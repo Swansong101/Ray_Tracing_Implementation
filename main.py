@@ -121,8 +121,8 @@ def display_splash_screen():
     splash_pen.write("Glow in the Dark Maze Game", align="center", font=("Courier", 24, "normal"))
 
     # Add maze picture at the center
-    turtle.addshape("sodapdf-converted.gif")
-    splash_pen.shape("sodapdf-converted.gif")
+    turtle.addshape("images//sodapdf-converted.gif")
+    splash_pen.shape("images//sodapdf-converted.gif")
     splash_pen.goto(0, -50)
     splash_pen.stamp()
     turtle.update()  # Update the turtle graphics to ensure the image is displayed
@@ -156,7 +156,7 @@ def setup_maze(level):
 
             if character == "X":
                 pen.goto(screen_x, screen_y)
-                pen.shape("wall.gif")
+                pen.shape("images//wall.gif")
                 pen.stamp()
                 walls.append((screen_x, screen_y))
 
@@ -174,10 +174,10 @@ def setup_maze(level):
 
 # Characters available for selection
 characters = [
-    {"name": "Character 1", "picture": "player_right.gif"},
-    {"name": "Character 2", "picture": "player_right.gif"},
-    {"name": "Character 3", "picture": "player_right.gif"},
-    {"name": "Character 4", "picture": "player_right.gif"}
+    {"name": "Character 1", "picture": "images//player_right.gif"},
+    {"name": "Character 2", "picture": "images//player_right.gif"},
+    {"name": "Character 3", "picture": "images//player_right.gif"},
+    {"name": "Character 4", "picture": "images//player_right.gif"}
  ]
 
 # Selected character index (default to the first character)
@@ -282,8 +282,8 @@ wn.setup(700, 700)
 wn.tracer(0)
 
 # Register shapes
-images = ["player_right.gif", "player_right.gif", "treasure.gif", "wall.gif",
-          "pennywise - v2.gif", "door.gif"]
+images = ["images//player_right.gif", "images//player_right.gif", "images//treasure.gif", "images//wall.gif",
+          "images//pennywise - v2.gif", "images//door.gif"]
 for image in images:
     turtle.register_shape(image)
 
@@ -307,7 +307,7 @@ class Player(turtle.Turtle):
     def __init__(self, character):
         turtle.Turtle.__init__(self)
         self.shape(character["picture"])
-        self.shape("player_right.gif")
+        self.shape("images//player_right.gif")
         self.color("white")
         self.penup()
         self.speed(0)
@@ -336,7 +336,7 @@ class Player(turtle.Turtle):
         move_to_x = player.xcor() - 24
         move_to_y = player.ycor()
 
-        self.shape("player_right.gif")
+        self.shape("images//player_right.gif")
 
         # Check if the space has a wall
         if (move_to_x, move_to_y) not in walls:
@@ -347,7 +347,7 @@ class Player(turtle.Turtle):
         move_to_x = player.xcor() + 24
         move_to_y = player.ycor()
 
-        self.shape("player_right.gif")
+        self.shape("images//player_right.gif")
 
         # Check if the space has a wall
         if (move_to_x, move_to_y) not in walls:
@@ -379,8 +379,8 @@ class Player(turtle.Turtle):
 class Treasure(turtle.Turtle):
     def __init__(self, x, y):
         turtle.Turtle.__init__(self)
-        turtle.register_shape("treasure.gif")
-        self.shape("treasure.gif")
+        turtle.register_shape("images//treasure.gif")
+        self.shape("images//treasure.gif")
         self.color("gold")
         self.penup()
         self.speed(0)
@@ -399,8 +399,8 @@ class Treasure(turtle.Turtle):
 class Enemy(turtle.Turtle):
     def __init__(self, x, y):
         turtle.Turtle.__init__(self)
-        turtle.register_shape("pennywise - v2.gif")
-        self.shape("pennywise - v2.gif")
+        turtle.register_shape("images//pennywise - v2.gif")
+        self.shape("images//pennywise - v2.gif")
         self.color("gold")
         self.penup()
         self.speed(0)
@@ -418,11 +418,11 @@ class Enemy(turtle.Turtle):
         elif self.direction == "left":
             dx = -24
             dy = 0
-            self.shape("pennywise - v2.gif")
+            self.shape("images//pennywise - v2.gif")
         elif self.direction == "right":
             dx = 24
             dy = 0
-            self.shape("pennywise - v2.gif")
+            self.shape("images//pennywise - v2.gif")
         else:
             dx = 0
             dy = 0
@@ -469,8 +469,8 @@ class Enemy(turtle.Turtle):
 class Door(turtle.Turtle):
     def __init__(self, x, y):
         turtle.Turtle.__init__(self)
-        turtle.register_shape("door.gif")
-        self.shape("door.gif")  # Use the door image you created
+        turtle.register_shape("images//door.gif")
+        self.shape("images//door.gif")  # Use the door image you created
         self.color("brown")  # Set the color or any other properties
         self.penup()
         self.speed(0)
@@ -614,7 +614,7 @@ def setup_maze(level):
             # Check if it an X.
             if character == "X":
                 pen.goto(screen_x, screen_y)
-                pen.shape("wall.gif")
+                pen.shape("images//wall.gif")
                 pen.stamp()
                 # Add coordinates to wall list
                 walls.append((screen_x, screen_y))
