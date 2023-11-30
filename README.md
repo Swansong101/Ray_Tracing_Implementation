@@ -44,7 +44,7 @@ The game currently has three levels with increasing difficulty. Each level intro
 
 - **Sound Effects:**
   - [Peter Kimutai]
-  - [Alex Wafula]
+  - [Charis Orony]
     
 ## License
 
