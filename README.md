@@ -14,13 +14,25 @@ This project features the use of python language and provided libraries to creat
 
 ## How to Play
 
-1. Run `main.py` to start the game.
-2. Register your name and age.
-3. Select a character.
-4. Navigate through the maze using arrow keys.
-5. Collect treasures and avoid enemies.
-6. Reach the exit door to progress to the next level.
-7. Game over conditions: Colliding with enemies or collecting all treasures.
+1. Clone the project to your local machine:
+
+    ```bash
+    git clone https://github.com/your-username/glow-in-the-dark-maze.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd glow-in-the-dark-maze
+    ```
+
+3. Run `main.py` to start the game.
+4. Register your name and age.
+5. Select a character.
+6. Navigate through the maze using arrow keys.
+7. Collect treasures and avoid enemies.
+8. Reach the exit door to progress to the next level.
+9. Game over conditions: Colliding with enemies or collecting all treasures.
 
 ## Levels
 
