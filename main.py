@@ -24,7 +24,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Glow in the Dark Maze - Player Registration")
 
 # Set up fonts
-font_path = r"C:\Users\Mbete\Downloads\FontsFree-Net-SLC_.ttf"
+font_path = r"FontsFree-Net-SLC_.ttf"
 font = pygame.font.Font(font_path, 24)
 small_font = pygame.font.Font(font_path, 18)
 
@@ -99,7 +99,7 @@ display_registration_form()
 print("Player Name:", user_info["name"])
 print("Player Age:", user_info["age"])
 # Stop the theme song
-mixer.music.stop()
+
 
 
 # Function to display the splash scr with a countdown
@@ -168,6 +168,8 @@ def setup_maze(level):
 
             if character == "E":
                 enemies.append(Enemy(screen_x, screen_y))
+    #Add the level label and player score
+    
 
 
 # Characters available for selection
@@ -297,6 +299,8 @@ class Pen(turtle.Turtle):
         self.color("green")
         self.penup()
         self.speed(0)
+        
+        
 
 
 class Player(turtle.Turtle):
@@ -386,6 +390,10 @@ class Treasure(turtle.Turtle):
     def destroy(self):
         self.goto(2000, 2000)
         self.hideturtle()
+        
+        # Play game over sound
+        mixer.music.load("audio//getting_points.mp3")
+        mixer.music.play()
 
 
 class Enemy(turtle.Turtle):
@@ -583,8 +591,19 @@ level.append(level_3)
 
 # Create level setup function
 def setup_maze(level):
+    
     global doors, current_level
-    current_level += 1
+    #current_level += 1
+
+    # Game sound stops 
+    mixer.music.stop()
+    # Play new level sound
+    mixer.music.load("audio//Level_complete.mp3")
+    mixer.music.play()
+    #Labeling the level and player scores
+    wn.title(f"Glow In The Dark - Level: {current_level} Gold points: {player.gold}")
+
+
     for y in range(len(level)):
         for x in range(len(level[y])):
             # Get the character at each x,y coordinate
@@ -712,6 +731,8 @@ while running:
             if player.is_collision(treasure):
                 player.gold += treasure.gold
                 print("Player Gold: {}".format(player.gold))
+                #pygame.display.set_caption(f"Glow in the Dark Maze - Gold points: {player.gold}")
+                wn.title(f"Glow In The Dark - Level: {current_level} Gold points: {player.gold}")
                 treasure.destroy()
                 treasures.remove(treasure)
 
@@ -724,6 +745,7 @@ while running:
         # Check if the player reached the door
         if any(door.is_collision(player) for door in doors):
             # Transition to the next level
+            current_level += 1
             setup_maze(level[2])  # Assuming index 2 corresponds to the second level
             player.gold = 0
             game_over_flag = False
