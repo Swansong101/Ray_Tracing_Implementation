@@ -37,6 +37,9 @@ This project features the use of python language and provided libraries to creat
 ## Levels
 
 The game currently has three levels with increasing difficulty. Each level introduces new challenges and maze layouts.
+## Snapshots 
+<img width="960" alt="Screenshot 2023-12-01 144621" src="https://github.com/alexwafula/glowinthedark/assets/91899603/7a56af62-1d6d-4918-ba01-febed1eb59b6">
+<img width="960" alt="Screenshot 2023-12-01 144636" src="https://github.com/alexwafula/glowinthedark/assets/91899603/b14097a7-0592-45cc-bf9f-700caac657a5">
 
 ## Dependencies
 
